@@ -32,6 +32,11 @@ public class LoginController {
         return new ModelAndView("main");
     }
 
+    @RequestMapping(value = {"/mainPage1"},method = {RequestMethod.GET})
+    public ModelAndView mainPage1(HttpServletRequest request, HttpServletResponse response){
+        return new ModelAndView("main1");
+    }
+
     @RequestMapping(value = "/login",method = {RequestMethod.GET})
     @ResponseBody
     public User login(HttpServletRequest request, HttpServletResponse response, User user){
