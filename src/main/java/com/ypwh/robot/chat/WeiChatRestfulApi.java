@@ -53,7 +53,7 @@ public class WeiChatRestfulApi {
      * @return 登录二维码网址
      */
     String jslogin() {
-        SRequest request = DefaultRequest.GET("https://login.wx.qq.com/jslogin");
+        DefaultRequest request = DefaultRequest.GET("https://login.wx.qq.com/jslogin");
         request.query("_", time++);
         request.query("appid", "wx782c26e4c19acffb");
         request.query("fun", "new");
@@ -74,7 +74,7 @@ public class WeiChatRestfulApi {
      * @return 监听结果，code=200用户授权登录，code=201用户扫描二维码，code=408等待用户扫描或授权，其他则表示登录超时
      */
     RspLogin login() {
-        XRequest request = XRequest.GET("https://login.wx.qq.com/cgi-bin/mmwebwx-bin/login");
+        DefaultRequest request = DefaultRequest.GET("https://login.wx.qq.com/cgi-bin/mmwebwx-bin/login");
         request.query("_", time++);
         request.query("loginicon", true);
         request.query("r", (int) (~(System.currentTimeMillis())));
@@ -101,7 +101,7 @@ public class WeiChatRestfulApi {
      * @param url 登录url
      */
     void webwxnewloginpage(String url) {
-        String rspStr = XTools.http(httpExecutor, XRequest.GET(url)).string();
+        String rspStr = XTools.http(httpExecutor, DefaultRequest.GET(url)).string();
         if (!XTools.strEmpty(rspStr) && REX_LOGIN.matcher(rspStr).find()) {
             this.uin = rspStr.substring(rspStr.indexOf("<wxuin>") + "<wxuin>".length(), rspStr.indexOf("</wxuin>"));
             this.sid = rspStr.substring(rspStr.indexOf("<wxsid>") + "<wxsid>".length(), rspStr.indexOf("</wxsid>"));
@@ -116,10 +116,10 @@ public class WeiChatRestfulApi {
      * @return 初始化结果
      */
     RspInit webwxinit() {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxinit", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxinit", host));
         request.query("r", (int) (~(this.timeInit)));
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqInit(new BaseRequest(uin, sid, skey)))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqInit(new BaseRequest(uin, sid, skey)))));
         RspInit rspInit = GSON.fromJson(XTools.http(httpExecutor, request).string(), RspInit.class);
         this.skey = rspInit.SKey;
         this.synckey = rspInit.SyncKey;
@@ -134,9 +134,9 @@ public class WeiChatRestfulApi {
      * @return 接口调用结果
      */
     RspStatusNotify webwxstatusnotify(String userName, int notifyCode) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxstatusnotify", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxstatusnotify", host));
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqStatusNotify(new BaseRequest(uin, sid, skey), notifyCode, userName))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqStatusNotify(new BaseRequest(uin, sid, skey), notifyCode, userName))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspStatusNotify.class);
     }
 
@@ -146,7 +146,7 @@ public class WeiChatRestfulApi {
      * @return 联系人列表
      */
     RspGetContact webwxgetcontact() {
-        XRequest request = XRequest.GET(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxgetcontact", host));
+        DefaultRequest request = DefaultRequest.GET(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxgetcontact", host));
         request.query("r", System.currentTimeMillis());
         request.query("seq", 0);
         request.query("skey", this.skey);
@@ -161,11 +161,11 @@ public class WeiChatRestfulApi {
      * @return 联系人的详细信息
      */
     RspBatchGetContact webwxbatchgetcontact(List<Contact> contactList) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxbatchgetcontact", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxbatchgetcontact", host));
         request.query("r", System.currentTimeMillis());
         request.query("type", "ex");
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqBatchGetContact(new BaseRequest(uin, sid, skey), contactList))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqBatchGetContact(new BaseRequest(uin, sid, skey), contactList))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspBatchGetContact.class);
     }
 
@@ -175,7 +175,7 @@ public class WeiChatRestfulApi {
      * @return 检查结果
      */
     RspSyncCheck synccheck() {
-        XRequest request = XRequest.GET(String.format("https://webpush.%s/cgi-bin/mmwebwx-bin/synccheck", host));
+        DefaultRequest request = DefaultRequest.GET(String.format("https://webpush.%s/cgi-bin/mmwebwx-bin/synccheck", host));
         request.query("uin", this.uin);
         request.query("sid", this.sid);
         request.query("skey", this.skey);
@@ -192,11 +192,11 @@ public class WeiChatRestfulApi {
      * @return 获取到的数据
      */
     RspSync webwxsync() {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsync", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsync", host));
         request.query("sid", this.sid);
         request.query("skey", this.skey);
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqSync(new BaseRequest(uin, sid, skey), this.synckey))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqSync(new BaseRequest(uin, sid, skey), this.synckey))));
         RspSync rspSync = GSON.fromJson(XTools.http(httpExecutor, request).string(), RspSync.class);
         if (rspSync.SyncKey != null && rspSync.SyncKey.List != null && rspSync.SyncKey.Count > 0) {
             this.synckey = rspSync.SyncKey;
@@ -214,9 +214,9 @@ public class WeiChatRestfulApi {
      * @return 发送的结果
      */
     RspSendMsg webwxsendmsg(ReqSendMsg.Msg msg) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendmsg", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendmsg", host));
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspSendMsg.class);
     }
 
@@ -227,11 +227,11 @@ public class WeiChatRestfulApi {
      * @return 发送的结果
      */
     RspSendMsg webwxsendmsgimg(ReqSendMsg.Msg msg) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendmsgimg", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendmsgimg", host));
         request.query("fun", "async");
         request.query("f", "json");
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspSendMsg.class);
     }
 
@@ -242,11 +242,11 @@ public class WeiChatRestfulApi {
      * @return 发送的结果
      */
     RspSendMsg webwxsendvideomsg(ReqSendMsg.Msg msg) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendvideomsg", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendvideomsg", host));
         request.query("fun", "async");
         request.query("f", "json");
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspSendMsg.class);
     }
 
@@ -257,11 +257,11 @@ public class WeiChatRestfulApi {
      * @return 发送的结果
      */
     RspSendMsg webwxsendemoticon(ReqSendMsg.Msg msg) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendemoticon", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendemoticon", host));
         request.query("fun", "sys");
         request.query("f", "json");
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspSendMsg.class);
     }
 
@@ -272,11 +272,11 @@ public class WeiChatRestfulApi {
      * @return 发送的结果
      */
     RspSendMsg webwxsendappmsg(ReqSendMsg.Msg msg) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendappmsg", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxsendappmsg", host));
         request.query("fun", "async");
         request.query("f", "json");
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqSendMsg(new BaseRequest(uin, sid, skey), msg))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspSendMsg.class);
     }
 
@@ -289,8 +289,8 @@ public class WeiChatRestfulApi {
      * @return 撤回结果
      */
     RspRevokeMsg webwxrevokemsg(long clientMsgId, long serverMsgId, String userName) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxrevokemsg", host));
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqRevokeMsg(new BaseRequest(uin, sid, skey), String.valueOf(clientMsgId), String.valueOf(serverMsgId), userName))));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxrevokemsg", host));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqRevokeMsg(new BaseRequest(uin, sid, skey), String.valueOf(clientMsgId), String.valueOf(serverMsgId), userName))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspRevokeMsg.class);
     }
 
@@ -302,7 +302,7 @@ public class WeiChatRestfulApi {
      * @return 获取到的图片文件
      */
     File webwxgetmsgimg(long msgId, String type) {
-        XRequest request = XRequest.GET(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxgetmsgimg", host));
+        DefaultRequest request = DefaultRequest.GET(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxgetmsgimg", host));
         request.query("MsgID", msgId);
         request.query("skey", skey);
         request.query("type", type);
@@ -328,7 +328,7 @@ public class WeiChatRestfulApi {
      * @return 获取到的语音文件
      */
     File webwxgetvoice(long msgId) {
-        XRequest request = XRequest.GET(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxgetvoice", host));
+        DefaultRequest request = DefaultRequest.GET(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxgetvoice", host));
         request.query("msgid", msgId);
         request.query("skey", skey);
         request.query("pass_ticket", passticket);
@@ -342,7 +342,7 @@ public class WeiChatRestfulApi {
      * @return 获取到的视频文件
      */
     File webwxgetvideo(long msgId) {
-        XRequest request = XRequest.GET(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxgetvideo", host));
+        DefaultRequest request = DefaultRequest.GET(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxgetvideo", host));
         request.query("msgid", msgId);
         request.query("skey", this.skey);
         request.query("pass_ticket", this.passticket);
@@ -360,7 +360,7 @@ public class WeiChatRestfulApi {
      * @return 获取到的附件文件
      */
     File webwxgetmedia(long msgId, String filename, String mediaId, String sender) {
-        XRequest request = XRequest.GET(String.format("https://file.%s/cgi-bin/mmwebwx-bin/webwxgetmedia", host));
+        DefaultRequest request = DefaultRequest.GET(String.format("https://file.%s/cgi-bin/mmwebwx-bin/webwxgetmedia", host));
         request.query("encryfilename", filename);
         request.query("fromuser", this.uin);
         request.query("mediaid", mediaId);
@@ -381,10 +381,10 @@ public class WeiChatRestfulApi {
      * @return 发送的结果
      */
     RspVerifyUser webwxverifyuser(int opCode, String userName, String verifyTicket, String verifyContent) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxverifyuser", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxverifyuser", host));
         request.query("r", System.currentTimeMillis());
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqVerifyUser(new BaseRequest(uin, sid, skey), opCode, userName, verifyTicket, verifyContent))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqVerifyUser(new BaseRequest(uin, sid, skey), opCode, userName, verifyTicket, verifyContent))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspVerifyUser.class);
     }
 
@@ -398,9 +398,9 @@ public class WeiChatRestfulApi {
      * @return 修改备注的结果
      */
     RspOplog webwxoplog(int cmdId, int op, String userName, String remarkName) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxoplog", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxoplog", host));
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqOplog(new BaseRequest(uin, sid, skey), cmdId, op, userName, remarkName))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqOplog(new BaseRequest(uin, sid, skey), cmdId, op, userName, remarkName))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspOplog.class);
     }
 
@@ -414,10 +414,10 @@ public class WeiChatRestfulApi {
      * @return 添加或移除的结果
      */
     RspUpdateChatroom webwxupdatechartroom(String chatroom, String fun, String name, List<String> memberList) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxupdatechatroom", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxupdatechatroom", host));
         request.query("fun", fun);
         request.query("pass_ticket", this.passticket);
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqUpdateChatroom(new BaseRequest(uin, sid, skey), chatroom, fun, name, XTools.strJoin(memberList, ",")))));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqUpdateChatroom(new BaseRequest(uin, sid, skey), chatroom, fun, name, XTools.strJoin(memberList, ",")))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspUpdateChatroom.class);
     }
 
@@ -430,8 +430,8 @@ public class WeiChatRestfulApi {
      * @return 秒传结果，
      */
     RspCheckUpload webwxcheckupload(File file, String fromUserName, String toUserName) {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxcheckupload", host));
-        request.content(new XRequest.StringContent(XRequest.MIME_JSON, GSON.toJson(new ReqCheckUpload(new BaseRequest(uin, sid, skey), file, fromUserName, toUserName))));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxcheckupload", host));
+        request.content(new XRequest.StringContent(DefaultRequest.MIME_JSON, GSON.toJson(new ReqCheckUpload(new BaseRequest(uin, sid, skey), file, fromUserName, toUserName))));
         return GSON.fromJson(XTools.http(httpExecutor, request).string(), RspCheckUpload.class);
     }
 
@@ -454,7 +454,7 @@ public class WeiChatRestfulApi {
         long clientMediaId = ReqUploadMedia.clientMediaId();
         String deviceId = BaseRequest.deviceId();
         if (file.length() < 1024L * 1024L) {
-            XRequest request = XRequest.POST(String.format("https://file.%s/cgi-bin/mmwebwx-bin/webwxuploadmedia", host));
+            DefaultRequest request = DefaultRequest.POST(String.format("https://file.%s/cgi-bin/mmwebwx-bin/webwxuploadmedia", host));
             request.query("f", "json");
             request.content("id", String.format("WU_FILE_%d", fileId));
             request.content("name", fileName);
@@ -472,7 +472,7 @@ public class WeiChatRestfulApi {
             byte[] sliceBuffer = new byte[512 * 1024];
             try (BufferedInputStream bfinStream = new BufferedInputStream(new FileInputStream(file))) {
                 for (long sliceIndex = 0, sliceCount = (long) Math.ceil(file.length() / 512D / 1024D); sliceIndex < sliceCount; sliceIndex++) {
-                    XRequest request = XRequest.POST(String.format("https://file.%s/cgi-bin/mmwebwx-bin/webwxuploadmedia", host));
+                    DefaultRequest request = DefaultRequest.POST(String.format("https://file.%s/cgi-bin/mmwebwx-bin/webwxuploadmedia", host));
                     request.query("f", "json");
                     request.content("id", String.format("WU_FILE_%d", fileId));
                     request.content("name", fileName);
@@ -505,7 +505,7 @@ public class WeiChatRestfulApi {
      * 退出登录接口
      */
     void webwxlogout() {
-        XRequest request = XRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxlogout", host));
+        DefaultRequest request = DefaultRequest.POST(String.format("https://%s/cgi-bin/mmwebwx-bin/webwxlogout", host));
         request.query("redirect", 1);
         request.query("type", 0);
         request.query("skey", this.skey);

@@ -49,31 +49,19 @@ public final class DefaultRequest implements SRequest {
         setUrl(url);
     }
 
-    /**
-     * 新建一个GET请求
-     */
-    public static SRequest GET(String url) {
+    public static DefaultRequest GET(String url) {
         return new DefaultRequest(METHOD_GET, url);
     }
 
-    /**
-     * 新建一个POST请求
-     */
-    public static SRequest POST(String url) {
+    public static DefaultRequest POST(String url) {
         return new DefaultRequest(METHOD_POST, url);
     }
 
-    /**
-     * 新建一个PUT请求
-     */
-    public static SRequest PUT(String url) {
+    public static DefaultRequest PUT(String url) {
         return new DefaultRequest(METHOD_PUT, url);
     }
 
-    /**
-     * 新建一个DELETE请求
-     */
-    public static SRequest DELETE(String url) {
+    public static DefaultRequest DELETE(String url) {
         return new DefaultRequest(METHOD_DELETE, url);
     }
 
@@ -187,6 +175,127 @@ public final class DefaultRequest implements SRequest {
     @Override
     public Content getContent() {
         return this.requestContent;
+    }
+
+
+    /**
+     * 拼接get方式的请求参数
+     */
+    public String kvJoin(List<KeyValue> keyValues, String charset) throws UnsupportedEncodingException {
+        StringBuilder sbStr = new StringBuilder();
+        for (KeyValue keyValue : keyValues) {
+            if (sbStr.length() > 0) {
+                sbStr.append('&');
+            }
+            sbStr.append(URLEncoder.encode(keyValue.key, charset)).append('=').append(URLEncoder.encode(String.valueOf(keyValue.value), charset));
+        }
+        return sbStr.toString();
+    }
+
+
+    /**
+     * 添加请求参数，键重复则替换值
+     */
+    public SRequest query(String key, Object value) {
+        return query(key, value, false);
+    }
+
+    /**
+     * 添加值不为null的HTTP请求地址参数，可选择对于同名的请求地址参数的处理方式
+     * @param append true：清除已经存在的同名的请求地址参数，false：追加同名的请求地址参数
+     */
+    public SRequest query(String key, Object value, boolean append) {
+        Objects.requireNonNull(key);
+        if (this.requestQueries == null) {
+            this.requestQueries = new LinkedList<>();
+        }
+        if (append) {
+            Iterator<KeyValue> iterator = this.requestQueries.iterator();
+            while (iterator.hasNext()) {
+                KeyValue keyValue = iterator.next();
+                if (keyValue.key.equals(key)) {
+                    iterator.remove();
+                }
+            }
+        }
+        if (value != null) {
+            this.requestQueries.add(new KeyValue(key, value));
+        }
+        return this;
+    }
+
+    /**
+     * 添加请求头，键重复则替换值
+     */
+    public SRequest header(String key, String value) {
+        return header(key, value, false);
+    }
+
+    /**
+     * 添加HTTP请求头，可选择对于同名的请求头的处理方式
+     */
+    public SRequest header(String key, String value, boolean append) {
+        setHeader(key, value, append);
+        return this;
+    }
+
+    /**
+     * 添加请求体参数，允许同名的请求体参数。
+     * 如果有文件参数，则会使用multipart请求体，否则使用urlencoded请求体
+     */
+    public SRequest content(String key, Object value) {
+        return content(key, value, false);
+    }
+
+    /**
+     * 添加HTTP请求体参数
+     * 如果有文件参数，则使用multipart请求，否则使用urlencoded请求
+     */
+    public SRequest content(String key, Object value, boolean append) {
+        Objects.requireNonNull(key);
+        if (METHOD_GET.equals(requestMethod) || METHOD_DELETE.equals(requestMethod)) {
+            throw new IllegalArgumentException(String.format("%s方法不能添加请求体", requestMethod));
+        }
+        if (this.requestContent == null) {
+            this.requestContent = new UrlEncodeContent();
+        }
+        if (this.requestContent instanceof UrlEncodeContent) {
+            UrlEncodeContent urlencodedContent = ((UrlEncodeContent) this.requestContent);
+            if (value instanceof File || value instanceof Part) {
+                //如果请求体一开始是urlencoded类型的，现在来了一个文件，则自动转换成multipart类型的，然后交给multipart类型的处理逻辑处理
+                MultipartContent multipartContent = new MultipartContent();
+                for (KeyValue keyValue : urlencodedContent.getParams()) {
+                    multipartContent.part(keyValue.key, keyValue.value);
+                }
+                this.requestContent = multipartContent;
+            } else {
+                urlencodedContent.param(key, value, append);
+                return this;
+            }
+        }
+        if (this.requestContent instanceof MultipartContent) {
+            MultipartContent multipartContent = (MultipartContent) this.requestContent;
+            if (value instanceof Part) {
+                Part part = (Part) value;
+                if (key.equals(part.name)) {
+                    multipartContent.part((Part) value, append);
+                } else {
+                    throw new IllegalArgumentException(String.format("参数的key：%s与表单的名称：%s不相等", key, part.name));
+                }
+            } else {
+                multipartContent.part(key, value, append);
+            }
+            return this;
+        }
+        throw new IllegalStateException(String.format("%s不能接受键值对请求体", this.requestContent.getClass().getName()));
+    }
+
+    /**
+     * 添加自定义的HTTP请求体
+     */
+    public SRequest content(Content content) {
+        setContent(content);
+        return this;
     }
 
 }
