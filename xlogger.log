@@ -1,0 +1,84 @@
+2019-07-04 00:34:24.452 | W | Thread-23 | chatapi-wechat | 登录超时
+2019-07-04 00:34:24.452 | E | Thread-23 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:36:58.260 | W | Thread-26 | chatapi-wechat | 登录超时
+2019-07-04 00:36:58.260 | E | Thread-26 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:37:49.482 | W | Thread-29 | chatapi-wechat | 登录超时
+2019-07-04 00:37:49.482 | E | Thread-29 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:54:17.820 | W | Thread-21 | chatapi-wechat | 登录超时
+2019-07-04 00:54:17.820 | E | Thread-21 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:55:11.049 | W | Thread-24 | chatapi-wechat | 登录超时
+2019-07-04 00:55:11.065 | E | Thread-24 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:55:39.840 | W | Thread-27 | chatapi-wechat | 登录超时
+2019-07-04 00:55:39.840 | E | Thread-27 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:56:08.669 | W | Thread-30 | chatapi-wechat | 登录超时
+2019-07-04 00:56:08.669 | E | Thread-30 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:56:30.311 | W | Thread-33 | chatapi-wechat | 登录超时
+2019-07-04 00:56:30.311 | E | Thread-33 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:57:44.832 | W | Thread-36 | chatapi-wechat | 登录超时
+2019-07-04 00:57:44.832 | E | Thread-36 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 00:59:56.594 | W | Thread-39 | chatapi-wechat | 登录超时
+2019-07-04 00:59:56.594 | E | Thread-39 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 01:01:13.150 | W | Thread-42 | chatapi-wechat | 登录超时
+2019-07-04 01:01:13.151 | E | Thread-42 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 01:02:57.905 | W | Thread-45 | chatapi-wechat | 登录超时
+2019-07-04 01:02:57.905 | E | Thread-45 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 01:04:12.859 | W | Thread-48 | chatapi-wechat | 登录超时
+2019-07-04 01:04:12.859 | E | Thread-48 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 01:04:53.625 | W | Thread-51 | chatapi-wechat | 登录超时
+2019-07-04 01:04:53.625 | E | Thread-51 | chatapi-wechat | 登录出现错误：登陆超时
+2019-07-04 01:42:02.428 | W | Thread-18 | chatapi-wechat | 停止监听信息：1101
+2019-07-04 01:42:02.428 | E | Thread-18 | chatapi-wechat | 微信用户：骑马放羊看星星
+2019-07-04 01:42:02.428 | E | Thread-18 | chatapi-wechat | Cookie信息：
+	过期时间：2029-07-01 01:38:39，键：webwx_auth_ticket，值：CIsBEKf74KwMGoABcKZjqg9zJ72yeA7SXbGViV8xXzLSjHeGtyqapLUJlnWTGENlydRx1/PZKF+AmGFbt5o1pGBWGwX4nnXbM0xg6tQVaRFfnKWAi822E5pePRO62JQmScOm3lqjuqdCjVstwJwYqYHCz40SrsrqS90aoPh/jydH518Irw0sdXFsZE4=
+	过期时间：2029-07-01 01:38:39，键：webwxuvid，值：4a3a61cfd6dae004eb6357ec73e53bb51cd6748ab5cad0c76eed94c7ec4bee732010fffb0ec3e613a11d5ec4232b7300
+	过期时间：2019-07-04 13:38:39，键：mm_lang，值：zh_CN
+	过期时间：2019-07-04 13:38:51，键：webwx_data_ticket，值：gScY4Px6EF6LaEdqXYdPEMUF
+	过期时间：2019-07-04 13:38:51，键：wxsid，值：O7mmtANWXyTYHYX1
+	过期时间：2019-07-07 01:38:51，键：wxuin，值：1792802602
+	过期时间：2019-07-04 13:38:51，键：wxpluginkey，值：1562143219
+	过期时间：2019-07-04 13:38:51，键：wxloadtime，值：1562175520_expired
+2019-07-04 01:42:02.428 | E | Thread-18 | chatapi-wechat | 登录信息：
+	host：wx.qq.com
+	uin：1792802602
+	sid：O7mmtANWXyTYHYX1
+	dataTicket：null
+	uuid：gbmpD5s6Mg==
+	skey：@crypt_afc8237b_54ee7c3662b0802cf0fbeec6288a5325
+	passticket：AFar1UHJ09FccLEcq5gQ%2Bnjur3uJar76n5%2BX7xuOrrdjmW385WhVg3sAl2sPCXxA
+	synckey：1_696154727|2_696154847|3_696154581|11_696154801|201_1562175526|203_1562174572|1000_1562143219|1001_1562143222|2001_1562057327
+	syncCheckKey：1_696154727|2_696154847|3_696154581|11_696154801|201_1562175526|203_1562174572|1000_1562143219|1001_1562143222|2001_1562057327
+2019-07-04 01:50:32.886 | W | Thread-19 | chatapi-wechat | 登录异常
+String index out of range: -7
+java.lang.String.substring(String.java:1967)
+wechat.WeChatApi.webwxnewloginpage(WeChatApi.java:108)
+wechat.WeChatClient$WeChatThread.login(WeChatClient.java:786)
+wechat.WeChatClient$WeChatThread.run(WeChatClient.java:736)
+2019-07-04 01:50:32.887 | E | Thread-19 | chatapi-wechat | 登录出现错误：登陆异常
+2019-07-04 01:53:00.169 | W | Thread-22 | chatapi-wechat | 登录异常
+String index out of range: -7
+java.lang.String.substring(String.java:1967)
+wechat.WeChatApi.webwxnewloginpage(WeChatApi.java:108)
+wechat.WeChatClient$WeChatThread.login(WeChatClient.java:786)
+wechat.WeChatClient$WeChatThread.run(WeChatClient.java:736)
+2019-07-04 01:53:00.169 | E | Thread-22 | chatapi-wechat | 登录出现错误：登陆异常
+2019-07-04 01:55:16.512 | W | Thread-20 | chatapi-wechat | 登录异常
+String index out of range: -7
+java.lang.String.substring(String.java:1967)
+wechat.WeChatApi.webwxnewloginpage(WeChatApi.java:116)
+wechat.WeChatClient$WeChatThread.login(WeChatClient.java:786)
+wechat.WeChatClient$WeChatThread.run(WeChatClient.java:736)
+2019-07-04 01:55:16.512 | E | Thread-20 | chatapi-wechat | 登录出现错误：登陆异常
+2019-07-04 01:59:36.545 | W | Thread-19 | chatapi-wechat | 登录异常
+String index out of range: -7
+java.lang.String.substring(String.java:1967)
+wechat.WeChatApi.webwxnewloginpage(WeChatApi.java:116)
+wechat.WeChatClient$WeChatThread.login(WeChatClient.java:786)
+wechat.WeChatClient$WeChatThread.run(WeChatClient.java:736)
+2019-07-04 01:59:36.545 | E | Thread-19 | chatapi-wechat | 登录出现错误：登陆异常
+2019-07-04 02:00:07.347 | W | Thread-19 | chatapi-wechat | 登录异常
+String index out of range: -7
+java.lang.String.substring(String.java:1967)
+wechat.WeChatApi.webwxnewloginpage(WeChatApi.java:114)
+wechat.WeChatClient$WeChatThread.login(WeChatClient.java:786)
+wechat.WeChatClient$WeChatThread.run(WeChatClient.java:736)
+2019-07-04 02:00:07.348 | E | Thread-19 | chatapi-wechat | 登录出现错误：登陆异常

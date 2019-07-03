@@ -14,11 +14,12 @@
     <link href="../../css/chatroomfont.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/chatroomreset.min.css">
     <link rel="stylesheet" href="../../css/chatroomstyle.css">
+    <script type="javascript" src="../../js/jquery-3.4.1.min.js"></script>
 
 </head>
 <body>
 <div class="container">
-    <div class="left">
+    <div class="left" id="room">
         <div class="top">
             <input type="text" placeholder="搜索" />
             <a href="javascript:;" class="search"></a>
@@ -26,27 +27,15 @@
         <ul class="people">
             <li class="person" data-chat="person1">
                 <img src="../../img/4.jpg" alt="" />
-                <span class="name">Thomas Bangalter</span>
+                <span id="frendId" class="name"></span>
                 <span class="time">2:09 PM</span>
                 <span class="preview">I was wondering...</span>
             </li>
-            <li class="person" data-chat="person2">
-                <img src="../../img/8.png" alt="" />
-                <span class="name">Dog Woofson</span>
-                <span class="time">1:44 PM</span>
-                <span class="preview">I've forgotten how it felt before</span>
-            </li>
-            <li class="person" data-chat="person3">
-                <img src="../../img/6.jpeg" alt="" />
-                <span class="name">Louis CK</span>
-                <span class="time">2:09 PM</span>
-                <span class="preview">But we’re probably gonna need a new carpet.</span>
-            </li>
         </ul>
     </div>
-    <div class="right">
+    <div class="right" id="room1">
         <div class="top"><span>To: <span class="name">Dog Woofson</span></span></div>
-        <div class="chat" data-chat="person1">
+        <div class="chat" data-chat="person1" id="person1">
             <div class="conversation-start">
                 <span>Today, 6:48 AM</span>
             </div>
@@ -59,94 +48,11 @@
             <div class="bubble you">
                 I was wondering...
             </div>
-        </div>
-        <div class="chat" data-chat="person2">
-            <div class="conversation-start">
-                <span>Today, 5:38 PM</span>
-            </div>
-            <div class="bubble you">
-                Hello, can you hear me?
-            </div>
-            <div class="bubble you">
-                I'm in California dreaming
-            </div>
-            <div class="bubble me">
-                ... about who we used to be.
-            </div>
-            <div class="bubble me">
-                Are you serious?
-            </div>
-            <div class="bubble you">
-                When we were younger and free...
-            </div>
-            <div class="bubble you">
-                I've forgotten how it felt before
-            </div>
-        </div>
-        <div class="chat" data-chat="person3">
-            <div class="conversation-start">
-                <span>Today, 3:38 AM</span>
-            </div>
-            <div class="bubble you">
-                Hey human!
-            </div>
-            <div class="bubble you">
-                Umm... Someone took a shit in the hallway.
-            </div>
-            <div class="bubble me">
-                ... what.
-            </div>
-            <div class="bubble me">
-                Are you serious?
-            </div>
-            <div class="bubble you">
-                I mean...
-            </div>
-            <div class="bubble you">
-                It’s not that bad...
-            </div>
-            <div class="bubble you">
-                But we’re probably gonna need a new carpet.
-            </div>
-        </div>
-        <div class="chat" data-chat="person4">
-            <div class="conversation-start">
-                <span>Yesterday, 4:20 PM</span>
-            </div>
-            <div class="bubble me">
-                Hey human!
-            </div>
-            <div class="bubble me">
-                Umm... Someone took a shit in the hallway.
-            </div>
-            <div class="bubble you">
-                ... what.
-            </div>
-            <div class="bubble you">
-                Are you serious?
-            </div>
-            <div class="bubble me">
-                I mean...
-            </div>
-            <div class="bubble me">
-                It’s not that bad...
-            </div>
-        </div>
-        <div class="chat" data-chat="person5">
-            <div class="conversation-start">
-                <span>Today, 6:28 AM</span>
-            </div>
-            <div class="bubble you">
-                Wasup
-            </div>
-            <div class="bubble you">
-                Wasup
-            </div>
-            <div class="bubble you">
-                Wasup for the third time like is <br />you blind bitch
-            </div>
+            <div class="bubble me" id="mesay">
 
+            </div>
         </div>
+
         <div class="chat" data-chat="person6">
             <div class="conversation-start">
                 <span>Monday, 1:27 PM</span>
@@ -174,9 +80,48 @@
             <a href="javascript:;" class="write-link send"></a>
         </div>
     </div>
-</div>
-
-<script src="../../js/chatrooms.js"></script>
+    <div id="qrCodeDiv">
+        <h3>请扫码登陆</h3>
+        <img src="" style="width: 200px;" id="qrCode">
+    </div>
 </div>
 </body>
+<script src="../../js/chatrooms.js"></script>
+<script>
+    var socket;
+    if(typeof(WebSocket) == "undefined") {
+        alert("不支持此功能，请尝试chrome浏览器")
+    }else{
+        socket = new WebSocket("ws://localhost:8080/websocket/startAccount");
+        // socket = new WebSocket("${basePath}websocket/${cid}".replace("http","ws"));
+        //打开事件
+        socket.onopen = function() {
+            alert("Socket 已打开");
+            socket.send("这是来自客户端的消息" + location.href + new Date());
+        };
+        //获得消息事件
+        socket.onmessage = function(msg) {
+            alert(msg.data);
+            if(msg.data.indexOf("https:")!=-1){
+                document.getElementById("room").style.visibility="hidden";//隐藏
+                document.getElementById("room1").style.visibility="hidden";//隐藏
+                var src = document.getElementById("qrCode");
+                src.src=msg.data;
+            }else if(msg.data.indexOf("(chat)")!=-1){
+
+            }
+            //发现消息进入    开始处理前端触发逻辑
+        };
+        //关闭事件
+        socket.onclose = function() {
+            alert("Socket已关闭");
+        };
+        //发生了错误事件
+        socket.onerror = function() {
+            alert("Socket发生了错误");
+            //此时可以尝试刷新页面
+        }
+    }
+
+</script>
 </html>
