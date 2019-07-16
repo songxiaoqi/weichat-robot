@@ -1,4 +1,4 @@
-2019-07-04 00:34:24.452 | W | Thread-23 | chatapi-wechat | 登录超时
+019-07-04 00:34:24.452 | W | Thread-23 | chatapi-wechat | 登录超时
 2019-07-04 00:34:24.452 | E | Thread-23 | chatapi-wechat | 登录出现错误：登陆超时
 2019-07-04 00:36:58.260 | W | Thread-26 | chatapi-wechat | 登录超时
 2019-07-04 00:36:58.260 | E | Thread-26 | chatapi-wechat | 登录出现错误：登陆超时
@@ -82,3 +82,24 @@ wechat.WeChatApi.webwxnewloginpage(WeChatApi.java:114)
 wechat.WeChatClient$WeChatThread.login(WeChatClient.java:786)
 wechat.WeChatClient$WeChatThread.run(WeChatClient.java:736)
 2019-07-04 02:00:07.348 | E | Thread-19 | chatapi-wechat | 登录出现错误：登陆异常
+2019-07-05 10:43:18.450 | W | Thread-1 | chatapi-wechat | 停止监听信息：1101
+2019-07-05 10:43:18.466 | E | Thread-1 | chatapi-wechat | 微信用户：骑马放羊看星星
+2019-07-05 10:43:18.466 | E | Thread-1 | chatapi-wechat | Cookie信息：
+	过期时间：2029-07-02 10:35:31，键：webwx_auth_ticket，值：CIsBEOuI/aQNGoABF6lm6ND5pEfvgYdwoePN5IBULVsLs5aq1SzTwOrLKPzLCLo1xeIJytW0m7yCcVa9fTGSrnSnJtoAGa6qtKesUy9B4HqdbaV8iifr2Z5ClBgQHGAYK5L3y+99MRB6/8nxZcy3V/2nItyNAGdxyBPTEKlHtwKQj13w/1aHSa/Vh9U=
+	过期时间：2029-07-02 10:35:31，键：webwxuvid，值：a97a522e17607f8b4cc995d4d1477029a9ad921f871ced4b3a507091bb39ef6fb43a35a9d3cc62ec49161c2c7bf4a874
+	过期时间：2019-07-05 22:35:31，键：mm_lang，值：zh_CN
+	过期时间：2019-07-05 22:35:40，键：wxloadtime，值：1562294132_expired
+	过期时间：2019-07-05 22:43:10，键：webwx_data_ticket，值：gSe94Ixs6lWYTCARwiefPJ+6
+	过期时间：2019-07-05 22:43:10，键：wxsid，值：Y6b0JQkGQX5r1IY/
+	过期时间：2019-07-08 10:43:10，键：wxuin，值：1792802602
+	过期时间：2019-07-05 22:43:10，键：wxpluginkey，值：1562284940
+2019-07-05 10:43:18.466 | E | Thread-1 | chatapi-wechat | 登录信息：
+	host：wx.qq.com
+	uin：1792802602
+	sid：Y6b0JQkGQX5r1IY/
+	dataTicket：null
+	uuid：oZ-xE2psLw==
+	skey：@crypt_afc8237b_b8100f78edad027cdc64defcbcdff41d
+	passticket：uubrsQGkO7U99INPI%2FF11MZM8jpTzUZnZyzRbJ03K3XGYvLozgMPEdkpQh8OsZE1
+	synckey：1_696156880|2_696157009|3_696156948|11_696156994|201_1562294507|203_1562294407|1000_1562284940|1001_1562284943|2001_1562057327
+	syncCheckKey：1_696156880|2_696157009|3_696156948|11_696156994|201_1562294507|203_1562294407|1000_1562284940|1001_1562284943|2001_1562057327
